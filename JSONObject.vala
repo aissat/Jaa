@@ -1,6 +1,6 @@
 using Gee;
 
-namespace EasyJSON {
+namespace Gson {
 
 public  class JSONObject : GLib.Object {
 

@@ -6,6 +6,7 @@ namespace Gson {
 		private Json.Parser parser ;
 		private Json.Node   node   ;
 		private Json.Reader reader ;
+		private Json.Object object ;
 
 
 		public  string  data    {get ; set; default ="";}
@@ -107,11 +108,10 @@ namespace Gson {
 								Object?  Ob =args.arg();
 								var arr = new ArrayList<Object?>();
 
-								Json.Object obj = this.node.get_object ();
-								var O = obj.get_member (key);
-								Json.Array a = O.get_array();
+								this.object = this.node.get_object ();
+								Json.Array A = this.object.get_array_member (key);
 
-								this.set(key, add_object_elements_array (a, Ob, arr), null);
+								this.set(key, add_object_elements_array (A, Ob, arr), null);
 								break;
 
 							}
@@ -119,10 +119,11 @@ namespace Gson {
 						break;
 
 					case JVal.Object:
+						assert (this.reader.is_object ());
 						Object?  Ob =args.arg();
-						Json.Object obj = this.node.get_object ();
-						var JO = obj.get_member(key).get_object () ;
-						this.set(key,add_object(Ob,JO),null);
+						this.object = this.node.get_object ();
+						Json.Object O = this.object.get_object_member(key);
+						this.set(key,add_object(Ob,O),null);
 						break;
 
 					default:
@@ -160,9 +161,9 @@ namespace Gson {
 		}
 
 		ArrayList add_object_elements_array(Json.Array A, Object?  Ob, ArrayList<Object?> array){
-			var t = Ob.get_type();
+			var type = Ob.get_type();
 			foreach ( Json.Node iter in A.get_elements ()){
-				var Obj = add_object(Object.new(t),iter.get_object());
+				var Obj = add_object(Object.new(type),iter.get_object());
 				array.add( Obj );
 			}
 			return array;

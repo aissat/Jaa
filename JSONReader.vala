@@ -104,9 +104,13 @@ namespace Gson {
 								break;
 
 							case JVal.Object:
+								var arr = new ArrayList<Object?>();
+								Object?  Ob =args.arg();
+								add_object_elements_array(key,Ob,arr);
 								break;
-								}
+
 							}
+						}
 						break;
 
 					case JVal.Object:
@@ -117,6 +121,34 @@ namespace Gson {
 				}
 				reader.end_member ();
 			}
+
+	Object add_object (Object?  Ob, Json.Object O ){
+
+		foreach ( var item in O.get_members()){
+
+			switch(O.get_member (item).type_name ()){
+
+			case "String":
+				Ob.set(item,O. get_string_member (item), null); 
+				break;
+
+				case "Integer": // I'm casting  O.get_int_member (item) to Int from Int64
+					Ob.set(item, (int)O.get_int_member (item), null);
+					break;
+
+				case "Floating Point":
+					Ob.set(item, O.get_double_member (item), null);
+					break;
+
+				case "Boolean":
+					Ob.set(item, O.get_boolean_member (item), null);
+					break;
+
+			}
+		}
+		return Ob;
+
+	}
 
 		void add_string_elements_array(string key, ArrayList<string?> array){
 			for(int i= 0; i<=this.reader.count_elements (); i++){

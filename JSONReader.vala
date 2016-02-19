@@ -104,9 +104,14 @@ namespace Gson {
 								break;
 
 							case JVal.Object:
-								var arr = new ArrayList<Object?>();
 								Object?  Ob =args.arg();
-								add_object_elements_array(key,Ob,arr);
+								var arr = new ArrayList<Object?>();
+
+								Json.Object obj = this.node.get_object ();
+								var O = obj.get_member (key);
+								Json.Array a = O.get_array();
+
+								this.set(key, add_object_elements_array (a, Ob, arr), null);
 								break;
 
 							}
@@ -154,17 +159,13 @@ namespace Gson {
 			return Ob;
 		}
 
-		void add_object_elements_array(string key,Object?  Ob, ArrayList<Object?> array){
-			Json.Object Job = this.node.get_object ();
-			var nd = Job.get_member (key);
-			Json.Array Jarr = nd.get_array();
-			var type = Ob.get_type();
-
-			foreach ( Json.Node iter in Jarr.get_elements ()){
-				Object nO =  Object.new (type);
-				array.add ( add_object (nO,iter.get_object ()) );
+		ArrayList add_object_elements_array(Json.Array A, Object?  Ob, ArrayList<Object?> array){
+			var t = Ob.get_type();
+			foreach ( Json.Node iter in A.get_elements ()){
+				var Obj = add_object(Object.new(t),iter.get_object());
+				array.add( Obj );
 			}
-			this.set(key,array,null);
+			return array;
 		}
 
 		void add_string_elements_array(string key, ArrayList<string?> array){

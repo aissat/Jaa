@@ -1,0 +1,33 @@
+{
+	"sources" : "./example",
+	"flags": [
+		"--thread"
+	],
+	"packages":	[
+		"json-glib-1.0",
+		"gio-2.0",
+		"gee-1.0",
+		"libsoup-2.4"
+	],
+	"libs"     :[
+		{
+			"sources"   : "./src",
+			"name"     : "libjaa",
+			"namespace" : "Jaa",
+			"version"   : "0.1",
+			"gir"       : false,
+			"output"    : "libjaa",
+
+			"packages"  : [
+				"json-glib-1.0", 	"gio-2.0",
+				"gee-1.0", "libsoup-2.4"
+			],
+
+			"flags"     :[
+				"--thread"
+			]
+
+		}
+	],
+	"output": "demo"
+}

@@ -1,22 +1,6 @@
 using Jaa;
 using Gee;
 
-public class JParser : Json.Parser{
-	public Json.Node? node { get; private set; }
-
-	public JParser (string data){
-
-		try {
-			this.load_from_data (data);
-		} catch (Error e) {
-			stdout.printf ("Unable to parse data: %s\n", e.message);
-		}
-		this.node = this.get_root ();
-	}
-
-}
-
-
 public class Mens :Object {
 
   public string firstName        {get ; set; default ="";}

@@ -1,7 +1,8 @@
 {
 	"sources" : "./example",
 	"flags": [
-		"--thread"
+		"--thread",
+		"-g --save-temps -X -w"
 	],
 	"packages":	[
 		"json-glib-1.0",

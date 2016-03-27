@@ -36,7 +36,7 @@ namespace Jaa {
 
 				switch(O.get_member(item).type_name()){
 				case "String":
-					Ob.set(item,O.get_string_member(item),null); 
+					Ob.set(item,O.get_string_member(item),null);
 					break;
 
 					case "Integer":
@@ -52,13 +52,20 @@ namespace Jaa {
 						break;
 
 					case "JsonObject":
-						unowned ParamSpec? spec = ocl.find_property (item); 
-						Object? ob = Object.new(spec.value_type);
+						this.ocl = (ObjectClass) Ob.get_type().class_ref ();
+
+						unowned ParamSpec? spec = ocl.find_property (item);
+						Type fieldType          = spec.value_type;
+						Value obj               = Value( fieldType );
+
+						Ob.get_property(item, ref obj);
+						Object? ob = Object.new(fieldType);
+
 						Ob.set (item, add_object (ob,O.get_member ((string)item).get_object () ) );
 						break;
 
 					case "JsonArray":
-						Ob.set( item, add_elements (O.get_member ((string)item), item) , null) ;
+						Ob.set( item, add_elements (Ob,O.get_member ((string)item), item) , null) ;
 						break;
 				}
 			}
@@ -66,7 +73,7 @@ namespace Jaa {
 
 		}
 
-		private ArrayList add_elements(Json.Node node ,string key = ""){
+		private ArrayList add_elements(Object?  Ob,Json.Node node ,string key = ""){
 
 			Json.Reader reader = new Json.Reader (node);
 			Json.Array JArray  = node.get_array();
@@ -114,14 +121,14 @@ namespace Jaa {
 						return array;
 
 					case "JsonObject":
-						unowned ParamSpec? spec = ocl.find_property (key); 
+						unowned ParamSpec? spec = ocl.find_property (key);
 						Type fieldType          = spec.value_type;
 						Value obj               = Value( fieldType );
-						_object.get_property(key, ref obj);
+						Ob.get_property(key, ref obj);
 
 						Gee.ArrayList<Object?> array = (Gee.ArrayList) obj.get_object();
 						if(obj.holds (typeof (Gee.Iterable) ) ){
-							if (node.get_node_type () == Json.NodeType.ARRAY) 
+							if (node.get_node_type () == Json.NodeType.ARRAY)
 							foreach ( Json.Node iter in JArray.get_elements ()){
 								Object? ob = Object.new( array.element_type);
 								JObject      = iter.get_object ();

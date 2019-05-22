@@ -49,8 +49,8 @@ public class JHumans : Object  {
     mens.get(0).print_obj();
     mens.get(1).print_obj();
     stdout.printf ("%s => %s ==> %i : %s ## %.2f ## %s  \n",this.firstName,this.lastName ,
-    										this.Numbers.get(1),this.Labels.get(1),
-    										this.tall,this.married.to_string () );
+    			this.Numbers.get(1),this.Labels.get(1),
+    			this.tall,this.married.to_string () );
   }
 }
 
